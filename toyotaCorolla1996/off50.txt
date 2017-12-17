@@ -1,0 +1,15 @@
+Setting up inital connection... (Adapter: ELM Connected, Car: Car Connected)
+Successful link established
+######## Accelerator ########
+THROTTLE_POS: 62.7450980392 percent
+RELATIVE_THROTTLE_POS: Unsupported for this car
+THROTTLE_POS_B: Unsupported for this car
+THROTTLE_POS_C: Unsupported for this car
+ACCELERATOR_POS_D: Unsupported for this car
+ACCELERATOR_POS_E: Unsupported for this car
+ACCELERATOR_POS_F: Unsupported for this car
+THROTTLE_ACTUATOR: Unsupported for this car
+RELATIVE_ACCEL_POS: Unsupported for this car
+######## Engine ########
+RPM: 0.0 revolutions_per_minute
+FUEL_LEVEL: Unsupported for this car
