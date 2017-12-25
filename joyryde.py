@@ -2,25 +2,34 @@
 from __future__ import print_function
 import obd
 from obd import OBDStatus
+import time
 
-ODB_PORT = "/dev/rfcomm2" # Enter COM port here, e.g /dev/rfcomm0
+print("!!!! Scanning for serial ports !!!!")
+ports = obd.scan_serial()      # return list of valid USB or RF ports
+print(ports)                   # ['/dev/ttyUSB0', '/dev/ttyUSB1']
+# ODB_PORT = ports[0] # Enter COM port here, e.g /dev/rfcomm0
+ODB_PORT = "/dev/pts/6" # Enter COM port here manually if needed, e.g /dev/rfcomm0
 
+connection = None
 print("####################### Starting... #######################")
 try:
-    connection = obd.OBD(ODB_PORT) # auto-connects to USB or RF port
+    connection = obd.OBD(ODB_PORT, None, None, True) # auto-connects to USB or RF port
+    #connection = obd.OBD(ODB_PORT)
     # self.fail('message')
-    print("Status: " + connection)
+    print("Status: " + connection.status())
 except Exception as e:
-    print("Setting up inital connection... (Adapter: " + OBDStatus.ELM_CONNECTED + ", Car: " + OBDStatus.CAR_CONNECTED + ")")
-    while OBDStatus.CAR_CONNECTED != "Car Connected":
+    print("Setting up inital connection... ")
+    while connection == None or connection.status() != OBDStatus.CAR_CONNECTED:
+        time.sleep(1)
         try:
-            connection
-            print("Status:" + connection)
+            connection = obd.OBD(ODB_PORT, None, None, True)
+            print("Status: " + connection.status())
         except Exception as e:
-            print("Initial connection failed, trying to reconnect... (Adapter: " + OBDStatus.ELM_CONNECTED + ", Car: " + OBDStatus.CAR_CONNECTED + ")")
+            print("Initial connection failed, trying to reconnect... ")
 
-if OBDStatus.CAR_CONNECTED == "Car Connected":
+if connection.status() == OBDStatus.CAR_CONNECTED:
     print("####################### Successful link established #######################")
+
 
 
 def queryCar( title, queries ):
@@ -42,14 +51,14 @@ def queryCar( title, queries ):
 # Engine
 queryCar('Engine', ['RPM','SPEED','FUEL_LEVEL'])
 
-# Accelerator
+# # Accelerator
 queryCar('Accelerator', ['THROTTLE_POS','RELATIVE_THROTTLE_POS','THROTTLE_POS_B','THROTTLE_POS_C','ACCELERATOR_POS_D','ACCELERATOR_POS_E','ACCELERATOR_POS_F','THROTTLE_ACTUATOR','RELATIVE_ACCEL_POS'])
-
-# Emissions
-queryCar('Emissions', ['O2_SENSORS','O2_SENSORS_ALT','AIR_STATUS','O2_S1_WR_VOLTAGE','O2_S2_WR_VOLTAGE','O2_S3_WR_VOLTAGE','O2_S4_WR_VOLTAGE','O2_S5_WR_VOLTAGE','O2_S6_WR_VOLTAGE','O2_S7_WR_VOLTAGE','O2_S8_WR_VOLTAGE','O2_S1_WR_CURRENT','O2_S2_WR_CURRENT','O2_S3_WR_CURRENT','O2_S4_WR_CURRENT','O2_S5_WR_CURRENT','O2_S6_WR_CURRENT','O2_S7_WR_CURRENT','O2_S8_WR_CURRENT'])
-
-# Pneumatics
-queryCar('Pneumatics', ['AMBIANT_AIR_TEMP','MAX_MAF','COOLANT_TEMP','INTAKE_TEMP','INTAKE_PRESSURE','FUEL_PRESSURE','EVAP_VAPOR_PRESSURE','EVAP_VAPOR_PRESSURE_ABS','EVAP_VAPOR_PRESSURE_ALT','BAROMETRIC_PRESSURE','WARMUPS_SINCE_DTC_CLEAR','FUEL_RAIL_PRESSURE_VAC','FUEL_RAIL_PRESSURE_DIRECT'])
+#
+# # Emissions
+# queryCar('Emissions', ['O2_SENSORS','O2_SENSORS_ALT','AIR_STATUS','O2_S1_WR_VOLTAGE','O2_S2_WR_VOLTAGE','O2_S3_WR_VOLTAGE','O2_S4_WR_VOLTAGE','O2_S5_WR_VOLTAGE','O2_S6_WR_VOLTAGE','O2_S7_WR_VOLTAGE','O2_S8_WR_VOLTAGE','O2_S1_WR_CURRENT','O2_S2_WR_CURRENT','O2_S3_WR_CURRENT','O2_S4_WR_CURRENT','O2_S5_WR_CURRENT','O2_S6_WR_CURRENT','O2_S7_WR_CURRENT','O2_S8_WR_CURRENT'])
+#
+# # Pneumatics
+# queryCar('Pneumatics', ['AMBIANT_AIR_TEMP','MAX_MAF','COOLANT_TEMP','INTAKE_TEMP','INTAKE_PRESSURE','FUEL_PRESSURE','EVAP_VAPOR_PRESSURE','EVAP_VAPOR_PRESSURE_ABS','EVAP_VAPOR_PRESSURE_ALT','BAROMETRIC_PRESSURE','WARMUPS_SINCE_DTC_CLEAR','FUEL_RAIL_PRESSURE_VAC','FUEL_RAIL_PRESSURE_DIRECT'])
 
 
 
