@@ -1,0 +1,12 @@
+!!!! Scanning for serial ports !!!!
+####################### Starting... #######################
+Status: Car Connected
+####################### Successful link established #######################
+RPM: 0.0 revolutions_per_minute
+RPM: Unsupported for this car
+RPM: Unsupported for this car
+RPM: Unsupported for this car
+RPM: Unsupported for this car
+RPM: Unsupported for this car
+RPM: Unsupported for this car
+RPM: Unsupported for this car
